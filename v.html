@@ -1,0 +1,54 @@
+<head>
+    <meta charset="UTF-8">
+    <title>blob</title>
+</head>
+
+<body>
+    <video id="video" controls="controls"></video>
+    <script type="text/javascript">
+        var video = document.querySelector('video');
+        // var assetURL = 'http://172.16.70.106:8020/Demo/Demo1/audio/test2.webm';
+        var assetURL = 'blob:http://www.codingke.com/a84e95a3-d786-4414-b5f7-613bd0f7e79c';
+        // Need to be specific for Blink regarding codecs
+        // ./mp4info frag_bunny.mp4 | grep Codec
+        var mimeCodec = 'video/webm;codecs="vorbis,vp8"';
+
+        if('MediaSource' in window && MediaSource.isTypeSupported(mimeCodec)) {
+            var mediaSource = new MediaSource();
+            video.src = URL.createObjectURL(mediaSource);
+            mediaSource.addEventListener('sourceopen', sourceOpen);
+
+        } else {
+            console.error('Unsupported MIME type or codec: ', mimeCodec);
+        }
+
+        function sourceOpen() {
+            console.log(this); // open
+            var mediaSource = this;
+            var sourceBuffer = mediaSource.addSourceBuffer(mimeCodec);
+            fetchAB(assetURL, function(buf) {
+                console.log(buf)
+                console.log(sourceBuffer);
+                sourceBuffer.addEventListener('updateend', function() {
+                    console.log(mediaSource);
+                    mediaSource.endOfStream();
+
+                    video.play();
+                    console.log(mediaSource.readyState); // ended
+                });
+                sourceBuffer.appendBuffer(buf);
+            });
+        };
+        function fetchAB(url, cb) {
+            console.log(url);
+            var xhr = new XMLHttpRequest;
+            xhr.open('get', url);
+            xhr.responseType = 'arraybuffer';
+            xhr.onload = function() {
+                console.log(xhr.response);
+                cb(xhr.response);
+            };
+            xhr.send();
+        };
+    </script>
+</body>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/2.0.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+    <link href="https://cdn.bootcss.com/limonte-sweetalert2/2.0.2/sweetalert2.css" rel="stylesheet">
+    <script type="text/javascript" src="__PUBLIC__/clipboard/clipboard.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/layui-v2.4.2/css/layui.css">
+    <title>详情</title>
+    <style type="text/css">
+        h3{
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+      <div class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="/" class="navbar-brand">首页</a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu" aria-expanded="false">
+                    <span class="sr-only">菜单折叠</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="javascript:;">招聘</a></li>
+                    <li><a href="javascript:;">关于</a></li>
+                </ul>
+                <form class="navbar-form navbar-left" method="GET" action="__CONTROLLER__/search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="kw" placeholder="Search...">
+                    </div>
+                    <button type="submit" class="btn btn-default">搜索</button>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="javascript:;">登录</a></li>
+                    <li><a href="javascript:;">注册</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+   <div class="container">
+        <h1 class="page-header">【<?php echo $info['title'];?>】</h1>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                    </div>
+                    <div class="panel-body">
+                        <h3>封面图</h3>
+                        <img width="224" src="<?php echo $info['imgurl'];?>">
+                        <br>
+                        <h3>下载地址</h3>
+                        <input type="text" name="kw" class="form-control"  readonly value="<?php echo $info['loadurl'] . ' 密码：'. $info['secret'];?>" /> <hr />
+                        <button type="button" data-clipboard-text="<?php echo $info['loadurl'] . ' 密码：'. $info['secret'];?>" class="btn copyBtn btn-success btn-lg btn-block">复制</button>
+                        <!-- <h3>分享</h3>                        
+                        <p>
+                            <i class="layui-icon layui-icon-login-wechat" style="font-size: 40px; color: #1E9FFF;"></i>
+                            <i class="layui-icon layui-icon-login-qq" style="font-size: 40px; color: #1E9FFF;"></i>
+                            <i class="layui-icon layui-icon-login-weibo" style="font-size: 40px; color: #1E9FFF;"></i>
+                        </p> -->
+                        <h3>剧情介绍</h3>
+                        <p class="alert alert-warning" style="text-indent: 2rem;">
+                            <?php echo $info['infos'];?>
+                        </p>
+                    </div>
+                </div>
+                <hr>
+                
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.bootcss.com/limonte-sweetalert2/2.0.2/sweetalert2.min.js"></script>
+<script type="text/javascript">  
+  
+  $(function () {
+     var clipboard = new Clipboard('.copyBtn');
+     $(".copyBtn").click(function () {
+         swal('标题', '复制【 <?php echo $info['loadurl'] . ' 密码：'. $info['secret'];?> 】成功！');
+     })
+
+  });
+
+</script>
+</html>
